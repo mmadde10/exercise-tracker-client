@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import { Link as RouterLink } from 'react-router-dom';
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
+import {getToken} from '../utils'
 
 
 
@@ -34,9 +35,29 @@ const useStyles = makeStyles({
 
 export default function ExerciseList() {
     const classes = useStyles();
+    const [exercises, setExercises] = useState(null);
+
+
+    const fetchExercises = async () => {
+        await fetch('https://exercisetracker-299302.ue.r.appspot.com/exercises', {
+            method: 'GET',
+            headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${getToken()}`
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            setExercises(data)
+        })
+        .catch(error => console.error(error));
+      }
+  useEffect(() => {
+    fetchExercises();
+    }, []);
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main">
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>

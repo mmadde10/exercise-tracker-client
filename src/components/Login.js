@@ -60,7 +60,7 @@ export default function Login(){
 
     const loginSubmitEventHandler = (e) => {
       e.preventDefault();
-      fetch('http://localhost:5000/users/signin', {
+      fetch('https://exercisetracker-299302.ue.r.appspot.com/users/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
